@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Random Image</title>
+  <style>
+    img { width: 400px; height: auto; display: block; margin: 0 auto; }
+    body { margin: 0; padding: 0; text-align: center; }
+  </style>
+</head>
+<body>
+  <img id="randImg" alt="random" />
+
+  <script>
+    async function main() {
+      // 假设 manifest.json 和 random.html 放在同一个目录（同一个 GitHub Pages 域）
+      const manifestUrl = './manifest.json';
+      const res = await fetch(manifestUrl, { cache: 'no-store' });
+      const list = await res.json();
+
+      if (!Array.isArray(list) || list.length === 0) return;
+
+      const pick = list[Math.floor(Math.random() * list.length)];
+      // 时间戳防缓存，避免“看起来不随机”
+      const sep = pick.includes('?') ? '&' : '?';
+      document.getElementById('randImg').src = pick + sep + 'v=' + Date.now();
+    }
+    main().catch(() => {});
+  </script>
+</body>
+</html>
