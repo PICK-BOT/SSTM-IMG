@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>随机图片</title>
+<style>
+  body { margin:0; display:flex; justify-content:center; align-items:center;
+         min-height:100vh; background:#111; }
+  img  { max-width:100%; height:auto; border-radius:8px; }
+</style>
+</head>
+<body>
+<img id="ri" src="" alt="随机图片">
+<script>
+(function () {
+  fetch('manifest1.json?' + Date.now())
+    .then(function (r) { return r.json(); })
+    .then(function (imgs) {
+      if (!imgs || !imgs.length) return;
+      document.getElementById('ri').src =
+        imgs[Math.floor(Math.random() * imgs.length)] + '?v=' + Date.now();
+    })
+    .catch(function () {});
+})();
+</script>
+</body>
+</html>
